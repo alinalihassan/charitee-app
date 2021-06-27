@@ -6,7 +6,6 @@ import {
   Image,
   ScrollView,
   Dimensions,
-  FlatList,
   Share,
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';

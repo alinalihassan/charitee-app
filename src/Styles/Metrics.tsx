@@ -9,7 +9,7 @@ const metrics = {
   navBarHeight: Platform.OS === 'ios' ? 44 : 60,
   padding: 16,
   tabIconSize: 25,
-  tabBarSize: Platform.OS == 'ios' ? 90 : 100,
+  tabBarSize: Platform.OS === 'ios' ? 90 : 100,
 };
 
 export default metrics;

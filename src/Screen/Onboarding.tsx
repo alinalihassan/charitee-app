@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import {
+  View, Image, Text, Dimensions, StyleSheet,
+} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import Metrics from '../../Styles/Metrices';
-import Images from '../../Styles/Images';
-import Colors from '../../Styles/Colors';
-import * as Constants from '../../Constants';
-import { RefObject } from 'react';
+import Metrics from '../Styles/Metrics';
+import Images from '../Styles/Images';
+import Colors from '../Styles/Colors';
+import * as Constants from '../Constants';
 
-const slides = [
+type OnboardingItem = {
+  key: number,
+  title: string,
+  text: string,
+  image: any,
+  backgroundColor: string,
+  button: string
+}
+
+const slides: OnboardingItem[] = [
   {
     key: 1,
     title: Constants.ANYWHERE_AT_ANYTIME,
@@ -35,89 +45,60 @@ const slides = [
 ];
 
 type OnboardingProps = {
-  slider: RefObject<unknown>,
+  slider: any,
   navigation: any
 }
 
 type OnboardingState = {
-  showRealApp: boolean,
   next: number
 }
 
 export default class ViewPagerPage extends Component<OnboardingProps, OnboardingState> {
-  constructor(props: OnboardingProps) {
-    super(props);
-    props.slider = React.createRef();
-    this.state = {
-      showRealApp: false,
-      next: 0,
-    };
+  renderItem = ({ item } : {item: OnboardingItem}) => (
+    <View style={styles.mainConatiner}>
+      <View style={styles.mainContainer}>
+        <Image source={item.image} style={styles.introSecondImage} />
+      </View>
+      <View style={styles.bottomContainer}>
+        <Text style={styles.titleText}>{item.title}</Text>
+        <Text style={styles.descriptionText1}>{item.text}</Text>
+      </View>
+    </View>
+  );
+
+  renderNextButton = () => (
+    <View style={styles.donateButton}>
+      <Text style={styles.donateText}>{Constants.CONTINUE}</Text>
+      <Image source={Images.right} style={styles.rightArrowStyle} />
+    </View>
+  );
+
+  renderDoneButton = () => (
+    <View style={styles.donateButton}>
+      <Text style={styles.donateText}>{Constants.GET_STARTED}</Text>
+      <Image source={Images.right} style={styles.rightArrowStyle} />
+    </View>
+  );
+
+  onDone = () => {
+    this.props.navigation.navigate('Welcome');
   }
 
-  _renderItem = ({ item }) => {
-    return (
-      <View style={styles.mainConatiner}>
-        <View style={styles.mainContainer}>
-          <Image source={item.image} style={styles.introSecondImage} />
-        </View>
-        <View style={styles.bottomContainer}>
-          <Text style={styles.titleText}>{item.title}</Text>
-          <Text style={styles.descriptionText1}>{item.text}</Text>
-        </View>
-      </View>
-    );
-  };
-  goNext = () => {
-    this.setState({ next: this.state.next + 1 });
-    this.props.slider?.goToSlide(this.state.next + 1, true);
-  };
-  _renderNextButton = () => {
-    return (
-      <TouchableOpacity
-        style={styles.donateButton}
-        onPress={() => this.goNext()}>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={styles.donateText}>{Constants.CONTINUE}</Text>
-          <Image source={Images.right} style={styles.rightArrowStyle} />
-        </View>
-      </TouchableOpacity>
-    );
-  };
-  _renderDoneButton = () => {
-    return (
-      <TouchableOpacity
-        style={styles.donateButton}
-        onPress={() => {
-          this.props.navigation.navigate('Welcome');
-        }}>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={styles.donateText}>{Constants.GET_STARTED}</Text>
-          <Image source={Images.right} style={styles.rightArrowStyle} />
-        </View>
-      </TouchableOpacity>
-    );
-  };
-  changeSlide = (e) => {
-    this.setState({ next: e });
-  };
   render() {
     return (
       <AppIntroSlider
-        ref={(ref) => (this.slider = ref)}
-        onSlideChange={(e) => this.changeSlide(e)}
-        renderItem={this._renderItem}
+        renderItem={this.renderItem}
         data={slides}
-        onDone={this._onDone}
-        bottomButton={true}
-        renderNextButton={this._renderNextButton}
-        renderDoneButton={this._renderDoneButton}
+        bottomButton
+        renderNextButton={this.renderNextButton}
+        renderDoneButton={this.renderDoneButton}
+        onDone={this.onDone}
         dotStyle={{ backgroundColor: '#ECEBED' }}
         activeDotStyle={{ backgroundColor: Colors.appHeaderColor }}
       />
     );
   }
 }
-
 
 const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
@@ -209,6 +190,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   donateButton: {
+    flexDirection: 'row',
     width: widthScreen / 1.12,
     height: 55,
     backgroundColor: Colors.appHeaderColor,

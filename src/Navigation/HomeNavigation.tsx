@@ -11,22 +11,20 @@ import FailedStatus from '../Screen/MainScreens/PaymentStatus/failedStatus';
 
 const HomeNavigation = createStackNavigator(
   {
-    main: { screen: MainContainer },
-    ProductDescriptionAbout: { screen: ProductDescriptionAbout },
-    ProductDescriptionView: { screen: ProductDescriptionView },
-    Donate: { screen: Donate },
-    DonationPayment: { screen: DonationPayment },
-    CardSelect: { screen: CardSelect },
-    CreditCardDetails: { screen: CreditCardDetails },
-    PaymentStatus: { screen: PaymentStatus },
-    FailedStatus: { screen: FailedStatus },
+    main: MainContainer,
+    ProductDescriptionAbout,
+    ProductDescriptionView,
+    Donate,
+    DonationPayment,
+    CardSelect,
+    CreditCardDetails,
+    PaymentStatus,
+    FailedStatus,
   },
 
   {
     navigationOptions: {
       header: null,
-      gesturesEnabled: false,
-      cardStack: { gesturesEnabled: false },
     },
     headerMode: 'none',
   },
