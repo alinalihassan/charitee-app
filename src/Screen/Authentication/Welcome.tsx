@@ -5,6 +5,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as Linking from 'expo-linking';
 import Images from '../../Styles/Images';
 import * as Constants from '../../Constants';
 import Colors from '../../Styles/Colors';
@@ -68,9 +69,19 @@ const Welcome = () => {
         <View style={styles.bottomWrapper}>
           <Text style={styles.bottomText1}>{Constants.WELCOME_BOOTOM_1}</Text>
           <View style={{ flexDirection: 'row', marginTop: 5 }}>
-            <Text style={styles.bottomTerm}>{Constants.TERM_CONDITION}</Text>
+            <Text
+              onPress={() => Linking.openURL(Constants.URL_TERMS_OF_SERVICE)}
+              style={styles.bottomTerm}
+            >
+              {Constants.TERM_CONDITION}
+            </Text>
             <Text style={styles.bottomAnd}>{Constants.AND}</Text>
-            <Text style={styles.bottomTerm1}>{Constants.PRIVACY}</Text>
+            <Text
+              onPress={() => Linking.openURL(Constants.URL_PRIVACY_POLICY)}
+              style={styles.bottomTerm1}
+            >
+              {Constants.PRIVACY}
+            </Text>
           </View>
         </View>
       </View>
