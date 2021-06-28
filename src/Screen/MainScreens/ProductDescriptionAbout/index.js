@@ -11,11 +11,11 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
 import * as Progress from 'react-native-progress';
-import Styles from './Styles';
 import { SliderBox } from 'react-native-image-slider-box';
-import Images from '../../Styles/Images';
-import Colors from '../../Styles/Colors';
-import * as Constants from '../../Constants';
+import Styles from './Styles';
+import Images from '../../../Styles/Images';
+import Colors from '../../../Styles/Colors';
+import * as Constants from '../../../Constants';
 
 const widthScreen = Dimensions.get('window').width;
 
@@ -72,6 +72,7 @@ class ProductDescriptionAbout extends Component {
       tabValue: 1,
     };
   }
+
   onShare = async () => {
     try {
       const result = await Share.share({
@@ -90,9 +91,11 @@ class ProductDescriptionAbout extends Component {
       console.error(error.message);
     }
   };
+
   selectTabs = (value) => {
     this.setState({ tabValue: value });
   };
+
   getScrollData = () => {
     if (this.state.tabValue == 2) {
       this.setState({ animatedData: !this.state.animatedData });
@@ -101,31 +104,32 @@ class ProductDescriptionAbout extends Component {
       });
     }
   };
-  brackerList = (data, index) => {
-    return (
-      <>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 10,
-            justifyContent: 'space-between',
-          }}>
-          <View style={{ flexDirection: 'row' }}>
-            {data.logoName !== '' ? (
-              <View style={Styles.mainProfileWrapper}>
-                <Text style={Styles.textWrapper}>{data.logoName}</Text>
-              </View>
-            ) : (
-              <Image source={data.logo} style={Styles.mainProfileWrapper1} />
-            )}
 
-            <Text style={Styles.titleText}>{data.name}</Text>
-          </View>
-          <Text style={Styles.textWrapperHours}>{data.hours}</Text>
+  brackerList = (data, index) => (
+    <>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 10,
+          justifyContent: 'space-between',
+        }}
+      >
+        <View style={{ flexDirection: 'row' }}>
+          {data.logoName !== '' ? (
+            <View style={Styles.mainProfileWrapper}>
+              <Text style={Styles.textWrapper}>{data.logoName}</Text>
+            </View>
+          ) : (
+            <Image source={data.logo} style={Styles.mainProfileWrapper1} />
+          )}
+
+          <Text style={Styles.titleText}>{data.name}</Text>
         </View>
-      </>
-    );
-  };
+        <Text style={Styles.textWrapperHours}>{data.hours}</Text>
+      </View>
+    </>
+  );
+
   render() {
     const { allImages, tabValue, product } = this.state;
     return (
@@ -133,17 +137,20 @@ class ProductDescriptionAbout extends Component {
         <SafeAreaProvider>
           <SafeAreaView
             style={Styles.safeViewStyle}
-            forceInset={{ bottom: 'never', top: 'never' }}>
+            forceInset={{ bottom: 'never', top: 'never' }}
+          >
             <ScrollView scrollEnabled={false}>
               <View style={{
                 marginBottom: -80,
                 zIndex: 1,
-              }}>
+              }}
+              >
                 <View style={Styles.backContainer}>
                   <TouchableOpacity
                     onPress={() => {
                       this.props.navigation.navigate('main');
-                    }}>
+                    }}
+                  >
                     <Image
                       source={Images.backIcon}
                       style={Styles.indecatorStyle}
@@ -156,9 +163,7 @@ class ProductDescriptionAbout extends Component {
                 sliderBoxHeight={250}
                 inactiveDotColor={Colors.White}
                 dotColor={Colors.appHeaderColor}
-                onCurrentImagePressed={(index) =>
-                  console.warn(`image ${index} pressed`)
-                }
+                onCurrentImagePressed={(index) => console.warn(`image ${index} pressed`)}
                 autoplay
                 activeOpacity={0.5}
                 dotStyle={{
@@ -205,8 +210,8 @@ class ProductDescriptionAbout extends Component {
                     height={8}
                     borderRadius={15}
                     borderWidth={0}
-                    color={'#4B97FC'}
-                    unfilledColor={'#E3F0FC'}
+                    color="#4B97FC"
+                    unfilledColor="#E3F0FC"
                   />
                   <View style={Styles.dataContentWrapper1}>
                     {/* 1 */}
@@ -217,12 +222,13 @@ class ProductDescriptionAbout extends Component {
                           style={[
                             Styles.mainWrapper,
                             { marginTop: 15, marginLeft: -10 },
-                          ]}>
-                          <Text style={Styles.description4}>{'6'}</Text>
-                          <Text style={Styles.description5}>{'July'}</Text>
+                          ]}
+                        >
+                          <Text style={Styles.description4}>6</Text>
+                          <Text style={Styles.description5}>July</Text>
                         </View>
                         <Text style={Styles.descriptionBottom}>
-                          {'Started'}
+                          Started
                         </Text>
                       </View>
                     </View>
@@ -237,11 +243,12 @@ class ProductDescriptionAbout extends Component {
                           style={[
                             Styles.mainWrapper,
                             { marginTop: 15, marginLeft: -10 },
-                          ]}>
-                          <Text style={Styles.description4}>{'26'}</Text>
-                          <Text style={Styles.description5}>{'days'}</Text>
+                          ]}
+                        >
+                          <Text style={Styles.description4}>26</Text>
+                          <Text style={Styles.description5}>days</Text>
                         </View>
-                        <Text style={Styles.descriptionBottom}>{'Left'}</Text>
+                        <Text style={Styles.descriptionBottom}>Left</Text>
                       </View>
                     </View>
                     {/* 3 */}
@@ -252,11 +259,12 @@ class ProductDescriptionAbout extends Component {
                           style={[
                             Styles.mainWrapper,
                             { marginTop: 15, marginLeft: -10 },
-                          ]}>
-                          <Text style={Styles.description4}>{'6'}</Text>
+                          ]}
+                        >
+                          <Text style={Styles.description4}>6</Text>
                         </View>
                         <Text style={Styles.descriptionBottom}>
-                          {'Supported'}
+                          Supported
                         </Text>
                       </View>
                     </View>
@@ -276,7 +284,8 @@ class ProductDescriptionAbout extends Component {
                       ]}
                       onPress={() => {
                         this.selectTabs(1);
-                      }}>
+                      }}
+                    >
                       <Text
                         style={[
                           Styles.buttonText,
@@ -286,8 +295,9 @@ class ProductDescriptionAbout extends Component {
                                 ? Colors.White
                                 : Colors.appHeaderColor,
                           },
-                        ]}>
-                        {'About'}
+                        ]}
+                      >
+                        About
                       </Text>
                     </TouchableOpacity>
                     {/* 2 */}
@@ -301,7 +311,8 @@ class ProductDescriptionAbout extends Component {
                       ]}
                       onPress={() => {
                         this.selectTabs(2);
-                      }}>
+                      }}
+                    >
                       <Text
                         style={[
                           Styles.buttonText,
@@ -311,8 +322,9 @@ class ProductDescriptionAbout extends Component {
                                 ? Colors.White
                                 : Colors.appHeaderColor,
                           },
-                        ]}>
-                        {'Backers'}
+                        ]}
+                      >
+                        Backers
                       </Text>
                     </TouchableOpacity>
                     {/* 3 */}
@@ -326,7 +338,8 @@ class ProductDescriptionAbout extends Component {
                       ]}
                       onPress={() => {
                         this.selectTabs(3);
-                      }}>
+                      }}
+                    >
                       <Text
                         style={[
                           Styles.buttonText,
@@ -336,8 +349,9 @@ class ProductDescriptionAbout extends Component {
                                 ? Colors.White
                                 : Colors.appHeaderColor,
                           },
-                        ]}>
-                        {'News'}
+                        ]}
+                      >
+                        News
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -353,7 +367,8 @@ class ProductDescriptionAbout extends Component {
                       this.props.navigation.navigate('ProductDescriptionView', {
                         selectedIndex: 1,
                       });
-                    }}>
+                    }}
+                  >
                     <Text style={Styles.aboutDetailsText1}>
                       {Constants.READ_MORE}
                     </Text>
@@ -362,41 +377,40 @@ class ProductDescriptionAbout extends Component {
               ) : tabValue === 2 ? (
                 <ScrollView onScrollBeginDrag={this.getScrollData}>
                   <View style={Styles.mainDescriptionWrapper}>
-                    {product.length > 0 &&
-                      product.map((data) => {
-                        return (
-                          <>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                marginTop: 10,
-                                justifyContent: 'space-between',
-                              }}>
-                              <View style={{ flexDirection: 'row' }}>
-                                {data.logoName !== '' ? (
-                                  <View style={Styles.mainProfileWrapper}>
-                                    <Text style={Styles.textWrapper}>
-                                      {data.logoName}
-                                    </Text>
-                                  </View>
-                                ) : (
-                                  <Image
-                                    source={data.logo}
-                                    style={Styles.mainProfileWrapper1}
-                                  />
-                                )}
+                    {product.length > 0
+                      && product.map((data) => (
+                        <>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              marginTop: 10,
+                              justifyContent: 'space-between',
+                            }}
+                          >
+                            <View style={{ flexDirection: 'row' }}>
+                              {data.logoName !== '' ? (
+                                <View style={Styles.mainProfileWrapper}>
+                                  <Text style={Styles.textWrapper}>
+                                    {data.logoName}
+                                  </Text>
+                                </View>
+                              ) : (
+                                <Image
+                                  source={data.logo}
+                                  style={Styles.mainProfileWrapper1}
+                                />
+                              )}
 
-                                <Text style={Styles.titleText}>
-                                  {data.name}
-                                </Text>
-                              </View>
-                              <Text style={Styles.textWrapperHours}>
-                                {data.hours}
+                              <Text style={Styles.titleText}>
+                                {data.name}
                               </Text>
                             </View>
-                          </>
-                        );
-                      })}
+                            <Text style={Styles.textWrapperHours}>
+                              {data.hours}
+                            </Text>
+                          </View>
+                        </>
+                      ))}
                   </View>
                 </ScrollView>
               ) : (
@@ -406,12 +420,13 @@ class ProductDescriptionAbout extends Component {
                       this.props.navigation.navigate('ProductDescriptionView', {
                         selectedIndex: 3,
                       });
-                    }}>
+                    }}
+                  >
                     <View style={Styles.cardWrapper}>
                       <View style={Styles.cardData}>
-                        <Text style={Styles.description}>{'17.09.2020'}</Text>
+                        <Text style={Styles.description}>17.09.2020</Text>
                         <Text style={Styles.title}>
-                          {'End of the year report'}
+                          End of the year report
                         </Text>
 
                         <Text style={Styles.aboutDetailsText}>
@@ -432,7 +447,8 @@ class ProductDescriptionAbout extends Component {
                 {/* Share */}
                 <TouchableOpacity
                   style={Styles.downloadButton}
-                  onPress={this.onShare}>
+                  onPress={this.onShare}
+                >
                   <Image
                     source={Images.download}
                     style={Styles.downloadStyle}
@@ -443,9 +459,10 @@ class ProductDescriptionAbout extends Component {
                   style={Styles.donateButton}
                   onPress={() => {
                     this.props.navigation.navigate('Donate');
-                  }}>
+                  }}
+                >
                   <View style={{ flexDirection: 'row' }}>
-                    <Text style={Styles.donateText}>{'Donate'}</Text>
+                    <Text style={Styles.donateText}>Donate</Text>
                     <Image
                       source={Images.right}
                       style={Styles.rightArrowStyle}

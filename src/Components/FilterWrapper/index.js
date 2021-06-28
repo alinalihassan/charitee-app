@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import {
+  View, Image, Text, TouchableOpacity,
+} from 'react-native';
 import Modal from 'react-native-modal';
-import Styles from './Styles';
+import ModalDropdown from 'react-native-modal-dropdown';
 import CheckBox from '@react-native-community/checkbox';
+import Styles from './Styles';
 import Images from '../../Styles/Images';
 import Colors from '../../Styles/Colors';
-import ModalDropdown from 'react-native-modal-dropdown';
 
 class FilterWrapper extends Component {
   constructor(props) {
@@ -20,9 +22,11 @@ class FilterWrapper extends Component {
       language: '',
     };
   }
+
   handleChangeFlag = (selectedOption) => {
     this.setState({ language: selectedOption });
   };
+
   selectAll = (newValue) => {
     const { counter } = this.props;
     if (newValue === true) {
@@ -33,6 +37,7 @@ class FilterWrapper extends Component {
       this.setState({ all: newValue });
     }
   };
+
   selectAdult = (newValue) => {
     const { counter } = this.props;
     if (newValue === true) {
@@ -43,6 +48,7 @@ class FilterWrapper extends Component {
       this.setState({ adult: newValue });
     }
   };
+
   selectChildren = (newValue) => {
     const { counter } = this.props;
     if (newValue === true) {
@@ -88,8 +94,9 @@ class FilterWrapper extends Component {
   };
 
   render() {
-    const { all, adult, children, elderly, animals, ecology, language } =
-      this.state;
+    const {
+      all, adult, children, elderly, animals, ecology, language,
+    } = this.state;
     const Language = ['Breakfast', 'Lunch', 'Dinner', 'Snaks'];
     return (
       <>
@@ -98,19 +105,20 @@ class FilterWrapper extends Component {
             style={{
               backgroundColor: 'transparent',
               height: 150,
-            }}></TouchableOpacity>
+            }}
+          />
           <View style={Styles.modelContainerWrapper}>
             <View style={Styles.mainWrapper}>
               <View style={Styles.mainHeader}>
                 <View />
-                <Text style={Styles.headerText}>{'Filters'}</Text>
+                <Text style={Styles.headerText}>Filters</Text>
                 <TouchableOpacity onPress={this.props.onclose}>
-                  <Text style={Styles.cancelText}>{'Cancel'}</Text>
+                  <Text style={Styles.cancelText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
               <View style={Styles.separator} />
 
-              <Text style={Styles.mainContentText}>{'Regions projects'}</Text>
+              <Text style={Styles.mainContentText}>Regions projects</Text>
               <View style={Styles.dropDownWrapper}>
                 <ModalDropdown
                   style={{
@@ -124,7 +132,7 @@ class FilterWrapper extends Component {
                     borderWidth: 0,
                     // height: 100,
                   }}
-                  defaultValue={'Netherland'}
+                  defaultValue="Netherland"
                   textStyle={{
                     fontSize: 15,
                     fontWeight: '400',
@@ -153,7 +161,7 @@ class FilterWrapper extends Component {
                 />
               </View>
 
-              <Text style={Styles.mainContentText}>{'Сategory'}</Text>
+              <Text style={Styles.mainContentText}>Сategory</Text>
               {/* All */}
               <View style={Styles.categoryContent}>
                 <CheckBox
@@ -161,7 +169,7 @@ class FilterWrapper extends Component {
                   boxType="square"
                   onCheckColor={Colors.appHeaderColor}
                   onTintColor={Colors.appHeaderColor}
-                  tintColor={'#DADFE6'}
+                  tintColor="#DADFE6"
                   value={all}
                   style={{
                     marginTop: 5,
@@ -170,7 +178,7 @@ class FilterWrapper extends Component {
                   }}
                   onValueChange={(newValue) => this.selectAll(newValue)}
                 />
-                <Text style={Styles.checkBoxText}>{'All Projects'}</Text>
+                <Text style={Styles.checkBoxText}>All Projects</Text>
               </View>
               {/* Adults */}
               <View style={Styles.categoryContent}>
@@ -179,7 +187,7 @@ class FilterWrapper extends Component {
                   boxType="square"
                   onCheckColor={Colors.appHeaderColor}
                   onTintColor={Colors.appHeaderColor}
-                  tintColor={'#DADFE6'}
+                  tintColor="#DADFE6"
                   value={adult}
                   style={{
                     marginTop: 5,
@@ -188,7 +196,7 @@ class FilterWrapper extends Component {
                   }}
                   onValueChange={(newValue) => this.selectAdult(newValue)}
                 />
-                <Text style={Styles.checkBoxText}>{'Adults'}</Text>
+                <Text style={Styles.checkBoxText}>Adults</Text>
               </View>
               {/* Children */}
               <View style={Styles.categoryContent}>
@@ -197,7 +205,7 @@ class FilterWrapper extends Component {
                   boxType="square"
                   onCheckColor={Colors.appHeaderColor}
                   onTintColor={Colors.appHeaderColor}
-                  tintColor={'#DADFE6'}
+                  tintColor="#DADFE6"
                   value={children}
                   style={{
                     marginTop: 5,
@@ -206,7 +214,7 @@ class FilterWrapper extends Component {
                   }}
                   onValueChange={(newValue) => this.selectChildren(newValue)}
                 />
-                <Text style={Styles.checkBoxText}>{'Children'}</Text>
+                <Text style={Styles.checkBoxText}>Children</Text>
               </View>
               {/* Elderly */}
               <View style={Styles.categoryContent}>
@@ -215,7 +223,7 @@ class FilterWrapper extends Component {
                   boxType="square"
                   onCheckColor={Colors.appHeaderColor}
                   onTintColor={Colors.appHeaderColor}
-                  tintColor={'#DADFE6'}
+                  tintColor="#DADFE6"
                   value={elderly}
                   style={{
                     marginTop: 5,
@@ -224,7 +232,7 @@ class FilterWrapper extends Component {
                   }}
                   onValueChange={(newValue) => this.selectElderly(newValue)}
                 />
-                <Text style={Styles.checkBoxText}>{'Elderly'}</Text>
+                <Text style={Styles.checkBoxText}>Elderly</Text>
               </View>
               {/* Animals */}
               <View style={Styles.categoryContent}>
@@ -233,7 +241,7 @@ class FilterWrapper extends Component {
                   boxType="square"
                   onCheckColor={Colors.appHeaderColor}
                   onTintColor={Colors.appHeaderColor}
-                  tintColor={'#DADFE6'}
+                  tintColor="#DADFE6"
                   value={animals}
                   style={{
                     marginTop: 5,
@@ -242,7 +250,7 @@ class FilterWrapper extends Component {
                   }}
                   onValueChange={(newValue) => this.selectAnimal(newValue)}
                 />
-                <Text style={Styles.checkBoxText}>{'Animals'}</Text>
+                <Text style={Styles.checkBoxText}>Animals</Text>
               </View>
               {/* Ecology */}
               <View style={Styles.categoryContent}>
@@ -251,7 +259,7 @@ class FilterWrapper extends Component {
                   boxType="square"
                   onCheckColor={Colors.appHeaderColor}
                   onTintColor={Colors.appHeaderColor}
-                  tintColor={'#DADFE6'}
+                  tintColor="#DADFE6"
                   value={ecology}
                   style={{
                     marginTop: 5,
@@ -260,7 +268,7 @@ class FilterWrapper extends Component {
                   }}
                   onValueChange={(newValue) => this.selectEcology(newValue)}
                 />
-                <Text style={Styles.checkBoxText}>{'Ecology'}</Text>
+                <Text style={Styles.checkBoxText}>Ecology</Text>
               </View>
               {/* End */}
               <View style={Styles.separator1} />
@@ -269,12 +277,12 @@ class FilterWrapper extends Component {
               <View style={Styles.bottomButtonWrapper}>
                 {/* Download */}
                 <TouchableOpacity style={Styles.buttonWrapper1}>
-                  <Text style={Styles.buttonText1}>{'Reset'}</Text>
+                  <Text style={Styles.buttonText1}>Reset</Text>
                 </TouchableOpacity>
                 {/* Donate */}
                 <TouchableOpacity style={Styles.donateButton}>
                   <View style={{ flexDirection: 'row' }}>
-                    <Text style={Styles.donateText}>{'Show 20 projects'}</Text>
+                    <Text style={Styles.donateText}>Show 20 projects</Text>
                     <Image
                       source={Images.right}
                       style={Styles.rightArrowStyle}

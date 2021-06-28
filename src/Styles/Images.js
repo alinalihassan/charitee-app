@@ -11,23 +11,9 @@ const images = {
   download: require('../../assets/download.png'),
   down: require('../../assets/down.png'),
 
-  indicator3: require('../../assets/indicator3.png'),
-  indicator2: require('../../assets/indicator2.png'),
-  indicator1: require('../../assets/indicator1.png'),
-
-  Finances: require('../../assets/Finances.png'),
-  Searching_Looking: require('../../assets/Searching_Looking.png'),
-  Globe: require('../../assets/Globe.png'),
-
   // Auth
   homeLogo: require('../../assets/HomeIcon/homeLogo.png'),
-  Apple: require('../../assets/HomeIcon/Apple.png'),
   backIcon: require('../../assets/HomeIcon/backIcon.png'),
-  gmail: require('../../assets/HomeIcon/gmail.png'),
-
-  Home: require('../../assets/HomeIcon/Home.png'),
-  profile: require('../../assets/HomeIcon/profile.png'),
-  Projects: require('../../assets/HomeIcon/Projects.png'),
 
   Search: require('../../assets/HomeIcon/Search.png'),
 

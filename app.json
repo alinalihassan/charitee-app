@@ -18,7 +18,8 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.charitee.mobile"
+      "bundleIdentifier": "com.charitee.mobile",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {

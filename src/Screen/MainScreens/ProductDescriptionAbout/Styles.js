@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import Colors from '../../Styles/Colors';
+import Colors from '../../../Styles/Colors';
+
 const widthScreen = Dimensions.get('window').width;
 const heightScreen = Dimensions.get('window').height;
 const styles = StyleSheet.create({
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
-  
+
     marginLeft: 20,
     marginTop: 40,
   },

@@ -1,11 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
-import RootNavigation from './Navigation/RootNavigation';
+import AppNavigation from './Navigation/AppNavigation';
 
 const Root = () => (
-  // <View style={{ flex: 1 }}>
-    <RootNavigation />
-  // </View>
+  <AppNavigation />
 );
 
 export default Root;
