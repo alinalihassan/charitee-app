@@ -14,13 +14,18 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../Styles/Colors';
 import ProjectCard from '../../Components/ProjectCard';
 import FilterChip from '../../Components/FilterChip';
-import { Project } from '../../Utils/Interfaces';
+import { ManyDataResponse, Project } from '../../Utils/Interfaces';
+
+enum ContentType {
+  Projects = 'Projects',
+  Charities = 'Charities',
+}
 
 const Projects = () => {
-  const [isLoading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [data, setData] = useState([]);
-  const [filter, setFilter] = useState('Projects');
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [search, setSearch] = useState<string>('');
+  const [data, setData] = useState<Project[]>([]);
+  const [filter, setFilter] = useState<string>('Projects');
   const [screenWidth, setScreenWidth] = useState(0);
 
   const { width } = Dimensions.get('window');
@@ -32,10 +37,10 @@ const Projects = () => {
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-        return response.json() as Promise<{ data: Project[] }>;
+        return response.json() as Promise<ManyDataResponse>;
       })
-      .then((data) => {
-        setData(data.data);
+      .then((json) => {
+        setData(json.data);
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
@@ -49,75 +54,64 @@ const Projects = () => {
   );
 
   return (
-    <>
-      <SafeAreaView style={styles.mainContainer1} />
-      <SafeAreaView style={styles.mainContainer}>
-        <View style={styles.mainHeader}>
-          <View style={styles.headerContainer}>
-            <>
-              <Text style={styles.titleText}>Projects</Text>
-              <View style={styles.searchWrapper}>
-                <MaterialIcons name="search" size={24} color="#B3BDCB" style={styles.inputImageLock} />
-                <TextInput
-                  style={styles.searchInput}
-                  value={search}
-                  placeholder="Enter the project name"
-                  placeholderTextColor={Colors.textInputColor}
-                  autoCapitalize="none"
-                  onChangeText={setSearch}
-                />
-              </View>
-            </>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={styles.mainWrapperButton}
-              scrollEnabled={scrollEnabled}
-              onContentSizeChange={(w) => setScreenWidth(w)}
-            >
-              <FilterChip
-                onPress={() => setFilter('Projects')}
-                selected={filter === 'Projects'}
-                title="Projects"
-              />
-              <FilterChip
-                onPress={() => setFilter('Charities')}
-                selected={filter === 'Charities'}
-                title="Charities"
-              />
-            </ScrollView>
-          </View>
-        </View>
-        {isLoading ? <ActivityIndicator size="large" style={styles.loadingBar} /> : (
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.title}
+    <SafeAreaView style={styles.mainContainer}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.titleText}>Projects</Text>
+        <View style={styles.searchWrapper}>
+          <MaterialIcons name="search" size={24} color="#B3BDCB" style={styles.inputImageLock} />
+          <TextInput
+            style={styles.searchInput}
+            value={search}
+            placeholder="Enter the project name"
+            placeholderTextColor={Colors.textInputColor}
+            autoCapitalize="none"
+            onChangeText={setSearch}
           />
-        )}
-      </SafeAreaView>
-    </>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.mainWrapperButton}
+          scrollEnabled={scrollEnabled}
+          onContentSizeChange={(w) => setScreenWidth(w)}
+        >
+          {Object.values(ContentType).map((key) => (
+            <FilterChip
+              onPress={() => setFilter(key)}
+              selected={filter === key}
+              title={key}
+              key={key}
+            />
+          ))}
+        </ScrollView>
+      </View>
+      {isLoading ? <ActivityIndicator size="large" style={styles.loadingBar} /> : (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.title}
+          style={styles.projectsList}
+        />
+      )}
+    </SafeAreaView>
   );
 };
 
 const widthScreen = Dimensions.get('window').width;
 const heightScreen = Dimensions.get('window').height;
 const styles = StyleSheet.create({
-  mainContainer1: {
-    backgroundColor: Colors.White,
-  },
   mainContainer: {
     flex: 1,
-    backgroundColor: '#F2F5FC',
-  },
-  mainHeader: {
     backgroundColor: Colors.White,
+  },
+  projectsList: {
+    backgroundColor: '#F2F5FC',
   },
   headerContainer: {
     width: widthScreen,
     alignSelf: 'center',
-    marginTop: 40,
+    marginTop: 16,
     marginBottom: 16,
   },
   titleText: {

@@ -20,6 +20,9 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-shadow": "off",
+        "no-console": "off",
+        "@typescript-eslint/no-shadow": ["error"],
         "no-unused-vars": "off",
         "no-use-before-define": "off",
         "react/jsx-filename-extension": [

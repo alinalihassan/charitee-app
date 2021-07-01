@@ -1,3 +1,20 @@
+export interface DefaultResponse {
+  status: number;
+  message: string;
+}
+
+export interface DataResponse {
+  status: number;
+  data: any;
+}
+
+export interface ManyDataResponse {
+  status: number;
+  count: number;
+  nextPage: number;
+  data: any[];
+}
+
 export interface DonationOption {
   amount: number;
   description: string;

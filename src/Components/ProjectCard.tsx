@@ -66,9 +66,8 @@ export default function ProjectCard({
         </View>
         <Progress.Bar
           progress={project.funding / project.goal}
-          width={widthScreen / 1.28}
+          width={widthScreen - 96}
           height={8}
-          borderRadius={12}
           borderWidth={0}
           color="#4B97FC"
           unfilledColor="#E3F0FC"
@@ -123,12 +122,11 @@ const styles = StyleSheet.create({
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: '#DADFE6',
-    marginTop: 8,
-    marginBottom: 8,
+    marginVertical: 8,
   },
   dataContentWrapper: {
     flexDirection: 'row',
-    marginBottom: 16,
+    marginVertical: 8,
     justifyContent: 'space-between',
   },
   goal: {
