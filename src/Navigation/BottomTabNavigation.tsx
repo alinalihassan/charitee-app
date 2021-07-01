@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Projects from '../Screen/MainScreens/Projects';
 import Profile from '../Screen/MainScreens/Profile';
 import colors from '../Styles/Colors';
-import AuthContext from '../Utils/AuthContext';
+import Projects from '../Screen/MainScreens/Projects';
 
 const Tab = createBottomTabNavigator();
 
-function Home() {
-  const { signIn } = React.useContext(AuthContext);
+function App() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -55,4 +53,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default App;

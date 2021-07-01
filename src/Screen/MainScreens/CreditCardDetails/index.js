@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import ToggleSwitch from 'toggle-switch-react-native';
+import Modal from 'react-native-modal';
 import Images from '../../../Styles/Images';
 import Colors from '../../../Styles/Colors';
 import * as Constants from '../../../Constants';
 import Styles from './Styles';
-import Modal from 'react-native-modal';
 
 class CreditCardDetails extends Component {
   constructor(props) {
@@ -28,20 +28,22 @@ class CreditCardDetails extends Component {
   }
 
   render() {
-    const { cardNumber, CVC, expiryDate, toogleValue, showPaymentModel } =
-      this.state;
+    const {
+      cardNumber, CVC, expiryDate, toogleValue, showPaymentModel,
+    } = this.state;
     return (
       <>
-        <SafeAreaView style={Styles.mainConatiner}>
+        <SafeAreaView style={Styles.mainContainer}>
           <View style={Styles.mainHeader}>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate('CardSelect');
-              }}>
+              }}
+            >
               <Image source={Images.backIcon} style={Styles.indecatorStyle} />
             </TouchableOpacity>
-            <Text style={Styles.donateText}>{'Credit card details'}</Text>
-            <Text style={Styles.donateText1}>{'ok'}</Text>
+            <Text style={Styles.donateText}>Credit card details</Text>
+            <Text style={Styles.donateText1}>ok</Text>
           </View>
 
           <View
@@ -50,7 +52,8 @@ class CreditCardDetails extends Component {
               marginTop: '15%',
               marginBottom: 20,
               justifyContent: 'center',
-            }}>
+            }}
+          >
             <View style={Styles.mainProfileWrapper}>
               <Image
                 source={Images.protection}
@@ -58,10 +61,10 @@ class CreditCardDetails extends Component {
               />
             </View>
 
-            <Text style={Styles.titleText}>{'Card details are secure'}</Text>
+            <Text style={Styles.titleText}>Card details are secure</Text>
           </View>
 
-          <View style={Styles.mainScreenConatiner}>
+          <View style={Styles.mainScreenContainer}>
             <TextInput
               style={Styles.inputWrapper}
               label="Card number"
@@ -70,7 +73,7 @@ class CreditCardDetails extends Component {
               onChangeText={(text) => this.setState({ cardNumber: text })}
               mode="outlined"
               // right={<Image source={Images.Icon_color} style={{ width: 25, height: 25 }} />}
-              right={
+              right={(
                 <TextInput.Icon
                   name={
                     cardNumber.length > 0 ? Images.Delete : Images.Icon_color
@@ -78,7 +81,7 @@ class CreditCardDetails extends Component {
                   color={cardNumber.length > 0 ? '#B3BDCB' : '#4890F0'}
                   style={{ marginTop: 12 }}
                 />
-              }
+              )}
               theme={{
                 roundness: 12,
                 colors: {
@@ -98,7 +101,8 @@ class CreditCardDetails extends Component {
                 flexDirection: 'row',
                 marginTop: 25,
                 justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <TextInput
                 style={Styles.inputWrapper1}
                 label="Expiration date"
@@ -126,13 +130,13 @@ class CreditCardDetails extends Component {
                 value={CVC}
                 onChangeText={(text) => this.setState({ CVC: text })}
                 mode="outlined"
-                right={
+                right={(
                   <TextInput.Icon
                     name={Images.information}
-                    color={'#4890F0'}
+                    color="#4890F0"
                     style={{ marginTop: 15 }}
                   />
-                }
+                )}
                 theme={{
                   roundness: 12,
                   colors: {
@@ -152,7 +156,8 @@ class CreditCardDetails extends Component {
               style={{
                 flexDirection: 'row',
                 marginTop: 50,
-              }}>
+              }}
+            >
               <ToggleSwitch
                 isOn={toogleValue}
                 onColor={Colors.appHeaderColor}
@@ -166,7 +171,7 @@ class CreditCardDetails extends Component {
               />
 
               <Text style={Styles.titleTextSave}>
-                {'Link your card after payment'}
+                Link your card after payment
               </Text>
             </View>
           </View>
@@ -176,7 +181,8 @@ class CreditCardDetails extends Component {
             // PaymentStatus
             onPress={() => {
               this.props.navigation.navigate('PaymentStatus');
-            }}>
+            }}
+          >
             <View style={{ flexDirection: 'row' }}>
               <Text style={Styles.buttonText}>{'Donate €10 '}</Text>
               <Image source={Images.right} style={Styles.rightArrowStyle1} />
@@ -190,18 +196,20 @@ class CreditCardDetails extends Component {
               animationIn="flipInY"
               animationOut="flipOutY"
               backdropOpacity={0.1}
-              avoidKeyboard={true}
-              transparent={true}
+              avoidKeyboard
+              transparent
               isVisible={showPaymentModel}
               onBackdropPress={() => {
                 this.setState({ showPaymentModel: false });
               }}
-              style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 30 }}>
+              style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 30 }}
+            >
               <View style={Styles.modalCont1}>
                 <TouchableOpacity
                   onPress={() => {
                     this.setState({ showPaymentModel: false });
-                  }}>
+                  }}
+                >
                   <Image
                     source={Images.dismiss}
                     style={{
@@ -223,7 +231,7 @@ class CreditCardDetails extends Component {
                   }}
                 />
 
-                <Text style={Styles.cvvText}>{'CVV'}</Text>
+                <Text style={Styles.cvvText}>CVV</Text>
 
                 <Text style={Styles.titleTextSave11}>
                   {Constants.CVVDESCRIPTION}
@@ -233,9 +241,10 @@ class CreditCardDetails extends Component {
                   // PaymentStatus
                   onPress={() => {
                     this.props.navigation.navigate('PaymentStatus');
-                  }}>
+                  }}
+                >
                   <View style={{ flexDirection: 'row' }}>
-                    <Text style={Styles.buttonText}>{'Ok'}</Text>
+                    <Text style={Styles.buttonText}>Ok</Text>
                   </View>
                 </TouchableOpacity>
               </View>

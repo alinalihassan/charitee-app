@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  View, Image, Text, TouchableOpacity, Platform, StyleSheet, Dimensions,
+  View, Image, Text, TouchableOpacity, Platform, StyleSheet, Dimensions, SafeAreaView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import Images from '../../Styles/Images';
 import * as Constants from '../../Constants';
@@ -15,15 +15,8 @@ const Welcome = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.mainConatiner}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.goBack();
-        }}
-      >
-        <Image source={Images.backIcon} style={styles.indicatorStyle} />
-      </TouchableOpacity>
-      <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer}>
+      <View style={styles.headerContainer}>
         <Text style={styles.titleText}>Welcome</Text>
         <Image source={Images.homeLogo} style={styles.introFirstImage} />
       </View>
@@ -85,43 +78,39 @@ const Welcome = () => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-  mainConatiner: {
+  mainContainer: {
     flex: 1,
-    width: Metrics.screenWidth,
-    height: Metrics.screenHeight,
     backgroundColor: 'white',
   },
   introFirstImage: {
     width: '65%',
     height: 250,
   },
-  mainContainer: {
-    flex: 0.55,
+  headerContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   bottomContainer: {
-    flex: 0.4,
+    flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   titleText: {
-    fontSize: 35,
+    fontSize: 36,
     fontWeight: '700',
     alignSelf: 'center',
     color: Colors.black,
     marginBottom: 20,
   },
-  indicatorStyle: {
-    width: 30,
-    height: 30,
-    marginTop: '16%',
+  backButtonStyle: {
+    marginTop: 20,
     marginLeft: 20,
   },
   donateButton: {

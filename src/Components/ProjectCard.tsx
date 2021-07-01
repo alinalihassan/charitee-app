@@ -1,87 +1,90 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   View, Text, ImageBackground, Dimensions,
-  StyleSheet, ImageSourcePropType,
+  StyleSheet, ScrollView, TouchableOpacity,
 } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Colors from '../Styles/Colors';
+import { Project } from '../Utils/Interfaces';
 
 type ProjectCardProps = {
-  mainImage: ImageSourcePropType,
-  title: string,
-  description: string,
-  percent: number,
-  price: number,
-  bar: number,
+  project: Project,
 }
 
 export default function ProjectCard({
-  mainImage, title, description, percent, price, bar,
+  project,
 }: ProjectCardProps) {
-  <View style={styles.cardWrapper}>
-    <ImageBackground
-      style={styles.mainImage}
-      source={mainImage}
-      imageStyle={{ borderTopLeftRadius: 15, borderTopRightRadius: 15 }}
+  const navigation = useNavigation();
+  return (
+    <TouchableOpacity
+      style={styles.cardWrapper}
+      onPress={() => {
+        navigation.navigate(
+          'ProductDescriptionAbout',
+        );
+      }}
     >
-      <View
-        style={{ flexDirection: 'row', marginTop: 20, marginLeft: 20 }}
+      <ImageBackground
+        style={styles.mainImage}
+        source={{ uri: project.images[0].url }}
+        imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
       >
-        <View style={styles.labelContainer}>
-          <Text
-            style={{
-              fontSize: 15,
-              color: Colors.White,
-              fontWeight: '500',
-            }}
-          >
-            #Children
-          </Text>
-        </View>
-        <View style={styles.labelContainer1}>
-          <Text
-            style={{
-              fontSize: 15,
-              color: Colors.White,
-              fontWeight: '500',
-            }}
-          >
-            Active
-          </Text>
-        </View>
-      </View>
-    </ImageBackground>
-    <View style={styles.cardData}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.description}>{description}</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.themesRow}
+        >
+          {project.themes.map((data) => (
+            <View
+              key={data.id}
+              style={styles.labelContainer}
+              onStartShouldSetResponder={() => true}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: Colors.White,
+                  fontWeight: '500',
+                }}
+              >
+                {data.name}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+      </ImageBackground>
+      <View style={styles.cardData}>
+        <Text style={styles.title}>{project.title}</Text>
+        <Text style={styles.description}>{project.summary}</Text>
 
-      <View style={styles.separator} />
+        <View style={styles.separator} />
 
-      <View style={styles.dataContentWrapper}>
-        <Text style={styles.description1}>{`${percent} %`}</Text>
-        <Text style={styles.description3}>{`${price} €`}</Text>
+        <View style={styles.dataContentWrapper}>
+          <Text style={styles.percent}>{`${((project.funding / project.goal) * 100).toFixed(2)} %`}</Text>
+          <Text style={styles.goal}>{`${project.goal} €`}</Text>
+        </View>
+        <Progress.Bar
+          progress={project.funding / project.goal}
+          width={widthScreen / 1.28}
+          height={8}
+          borderRadius={12}
+          borderWidth={0}
+          color="#4B97FC"
+          unfilledColor="#E3F0FC"
+        />
       </View>
-      <Progress.Bar
-        progress={bar}
-        width={widthScreen / 1.28}
-        height={8}
-        borderRadius={15}
-        borderWidth={0}
-        color="#4B97FC"
-        unfilledColor="#E3F0FC"
-      />
-    </View>
-  </View>;
+    </TouchableOpacity>
+  );
 }
 
 const widthScreen = Dimensions.get('window').width;
-
 const styles = StyleSheet.create({
   cardWrapper: {
-    width: widthScreen / 1.12,
+    width: widthScreen - 48,
     alignSelf: 'center',
     backgroundColor: Colors.White,
-    borderRadius: 15,
+    borderRadius: 12,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -90,67 +93,60 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
-    marginBottom: 20,
+    marginVertical: 8,
   },
   mainImage: {
     width: '100%',
-    height: 150,
+    height: 184,
+  },
+  themesRow: {
+    flexDirection: 'row',
+    paddingVertical: 16,
+    paddingHorizontal: 8,
   },
   cardData: {
-    marginTop: 15,
-    marginBottom: 20,
-    width: '90%',
+    marginVertical: 16,
+    marginHorizontal: 32,
     alignSelf: 'center',
   },
   title: {
-    fontSize: 21,
+    fontSize: 20,
     fontWeight: '500',
     color: '#05263D',
   },
   description: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '400',
     color: '#6D7E92',
-    marginTop: 7,
+    marginTop: 8,
   },
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: '#DADFE6',
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 8,
+    marginBottom: 8,
   },
   dataContentWrapper: {
     flexDirection: 'row',
-    marginBottom: 15,
+    marginBottom: 16,
     justifyContent: 'space-between',
   },
-  description3: {
+  goal: {
     color: '#073C7A',
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: '600',
-    marginTop: 3,
-    marginLeft: 3,
   },
-  description1: {
+  percent: {
     color: '#4B97FC',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '700',
   },
   labelContainer: {
-    width: 90,
     height: 30,
+    paddingHorizontal: 8,
     backgroundColor: 'rgba(0, 5, 21, 0.24)',
-    borderRadius: 9,
+    borderRadius: 8,
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  labelContainer1: {
-    width: 90,
-    height: 30,
-    backgroundColor: 'rgba(0, 5, 21, 0.24)',
-    borderRadius: 9,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 7,
+    marginLeft: 8,
   },
 });

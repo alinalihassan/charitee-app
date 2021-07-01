@@ -3,7 +3,7 @@ import Colors from '../../../Styles/Colors';
 
 const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-  mainConatiner: {
+  mainContainer: {
     flex: 1,
     backgroundColor: 'white',
   },
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Colors.White,
   },
-  mainScreenConatiner: {
+  mainScreenContainer: {
     width: widthScreen / 1.12,
     alignSelf: 'center',
     marginTop: '13%',

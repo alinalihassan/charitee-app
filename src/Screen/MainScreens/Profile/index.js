@@ -15,7 +15,7 @@ class Profile extends Component {
   render() {
     return (
       <>
-        <SafeAreaView style={Styles.mainConatiner} />
+        <SafeAreaView style={Styles.mainContainer} />
       </>
     );
   }

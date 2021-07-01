@@ -26,20 +26,21 @@ class DonationPayment extends Component {
     const { email, password } = this.state;
     return (
       <>
-        <SafeAreaView style={Styles.mainConatiner}>
+        <SafeAreaView style={Styles.mainContainer}>
           <View style={Styles.mainHeader}>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate('Donate');
-              }}>
+              }}
+            >
               <Image source={Images.backIcon} style={Styles.indecatorStyle} />
             </TouchableOpacity>
-            <Text style={Styles.donateText}>{'One-time payment'}</Text>
-            <Text style={Styles.donateText1}>{'ok'}</Text>
+            <Text style={Styles.donateText}>One-time payment</Text>
+            <Text style={Styles.donateText1}>ok</Text>
           </View>
 
-          <View style={Styles.mainScreenConatiner}>
-            <Text style={Styles.headerText}>{'Enter the donation amount'}</Text>
+          <View style={Styles.mainScreenContainer}>
+            <Text style={Styles.headerText}>Enter the donation amount</Text>
             <TextInput
               style={Styles.inputWrapper1}
               placeholder="10 |€"
@@ -49,11 +50,12 @@ class DonationPayment extends Component {
               keyboardType="numeric"
             />
             <View
-              style={{ flexDirection: 'row', marginTop: 20, marginBottom: 20 }}>
+              style={{ flexDirection: 'row', marginTop: 20, marginBottom: 20 }}
+            >
               <Image source={Images.Ic} style={Styles.mainProfileWrapper1} />
 
               <Text style={Styles.titleText}>
-                {'Thank you for your support'}
+                Thank you for your support
               </Text>
             </View>
 
@@ -61,7 +63,8 @@ class DonationPayment extends Component {
               style={Styles.donateButton}
               onPress={() => {
                 this.props.navigation.navigate('CardSelect');
-              }}>
+              }}
+            >
               <View style={{ flexDirection: 'row' }}>
                 <Text style={Styles.buttonText}>{'Pay credit card '}</Text>
                 <Image source={Images.right} style={Styles.rightArrowStyle} />
@@ -72,7 +75,7 @@ class DonationPayment extends Component {
               <TouchableOpacity style={Styles.appleButton}>
                 <View style={{ flexDirection: 'row' }}>
                   <Image source={Images.Apple} style={Styles.appleStyle} />
-                  <Text style={Styles.donateText1}>{'Pay'}</Text>
+                  <Text style={Styles.donateText1}>Pay</Text>
                 </View>
               </TouchableOpacity>
             )}

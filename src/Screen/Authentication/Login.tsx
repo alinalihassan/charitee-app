@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  Image,
   Text,
   TouchableOpacity,
   SafeAreaView,
@@ -10,7 +9,7 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import Images from '../../Styles/Images';
+import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../Styles/Colors';
 import * as Constants from '../../Constants';
 import AuthContext from '../../Utils/AuthContext';
@@ -23,26 +22,26 @@ const Login = () => {
 
   return (
     <>
-      <SafeAreaView style={styles.mainConatiner}>
+      <SafeAreaView style={styles.mainContainer}>
         <View style={styles.mainHeader}>
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
             }}
           >
-            <Image source={Images.backIcon} style={styles.indecatorStyle} />
+            <MaterialIcons name="chevron-left" size={32} color="black" />
           </TouchableOpacity>
-          <Text style={styles.donateText}>Login</Text>
-          <Text style={styles.donateText1}>ok</Text>
+          <Text style={styles.title}>Login</Text>
         </View>
 
-        <View style={styles.mainScreenConatiner}>
+        <View style={styles.form}>
           <TextInput
-            style={styles.inputWrapper}
+            style={styles.emailInput}
             label="Email"
             value={email}
             onChangeText={setEmail}
             mode="outlined"
+            autoCapitalize="none"
             theme={{
               roundness: 12,
               colors: {
@@ -55,11 +54,12 @@ const Login = () => {
           />
 
           <TextInput
-            style={styles.inputWrapper1}
+            style={styles.passwordInput}
             label="Password"
             value={password}
             onChangeText={setPassword}
             secureTextEntry
+            autoCapitalize="none"
             mode="outlined"
             theme={{
               roundness: 12,
@@ -80,14 +80,16 @@ const Login = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.donateButton}
+            style={styles.loginButton}
             onPress={() => {
-              signIn(email, password);
+              if (signIn) {
+                signIn(email, password);
+              }
             }}
           >
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.buttonText}>{Constants.LOGIN}</Text>
-              <Image source={Images.right} style={styles.rightArrowStyle} />
+              <MaterialIcons name="chevron-right" size={24} color="white" />
             </View>
           </TouchableOpacity>
 
@@ -111,52 +113,48 @@ const Login = () => {
 
 const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-  mainConatiner: {
+  mainContainer: {
     flex: 1,
     backgroundColor: 'white',
   },
   mainHeader: {
     flexDirection: 'row',
+    display: 'flex',
     marginTop: 25,
     width: widthScreen - 48,
     marginHorizontal: 24,
     alignSelf: 'center',
-    justifyContent: 'space-between',
   },
-  indecatorStyle: {
-    width: 30,
-    height: 30,
-  },
-  donateText: {
+  title: {
+    position: 'absolute',
+    width: widthScreen - 48,
+    textAlign: 'center',
+    alignSelf: 'center',
     fontSize: 21,
     fontWeight: '500',
-    color: Colors.primary,
+    color: '#000',
+    zIndex: -1,
   },
-  donateText1: {
-    fontSize: 21,
-    fontWeight: '500',
-    color: Colors.White,
-  },
-  mainScreenConatiner: {
+  form: {
     width: widthScreen - 48,
     marginHorizontal: 24,
     alignSelf: 'center',
-    marginTop: '30%',
+    marginTop: 128,
   },
-  inputWrapper: {
+  emailInput: {
     height: 50,
     width: widthScreen - 48,
     marginHorizontal: 24,
     alignSelf: 'center',
   },
-  inputWrapper1: {
+  passwordInput: {
     height: 50,
     width: widthScreen - 48,
     marginHorizontal: 24,
     alignSelf: 'center',
     marginTop: 16,
   },
-  donateButton: {
+  loginButton: {
     marginTop: 20,
     width: widthScreen - 48,
     marginHorizontal: 24,
@@ -172,14 +170,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Colors.White,
   },
-  rightArrowStyle: {
-    width: 27,
-    height: 13,
-    marginTop: 6,
-    marginLeft: 10,
-  },
   bottomWrapper: {
-    marginTop: '15%',
+    marginTop: 64,
   },
   bottomText1: {
     fontSize: 15,

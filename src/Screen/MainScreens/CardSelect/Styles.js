@@ -3,7 +3,7 @@ import Colors from '../../../Styles/Colors';
 
 const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-  mainConatiner: {
+  mainContainer: {
     flex: 1,
     backgroundColor: 'white',
   },

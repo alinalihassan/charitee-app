@@ -15,8 +15,6 @@ const images = {
   homeLogo: require('../../assets/HomeIcon/homeLogo.png'),
   backIcon: require('../../assets/HomeIcon/backIcon.png'),
 
-  Search: require('../../assets/HomeIcon/Search.png'),
-
   homeList1: require('../../assets/HomeIcon/homeList1.png'),
   homeList2: require('../../assets/HomeIcon/homeList2.png'),
   homeList3: require('../../assets/HomeIcon/homeList3.png'),

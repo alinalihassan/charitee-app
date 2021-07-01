@@ -11,9 +11,10 @@ import * as Constants from '../../Constants';
 import ImageFinance from '../../../assets/Finances.png';
 import MagnifyingGlass from '../../../assets/magnifyingGlass.png';
 import Globe from '../../../assets/Globe.png';
+import { projectsRequest } from '../../Utils/Networking';
 
 type OnboardingItem = {
-  key: number,
+  key: string,
   title: string,
   text: string,
   image: any,
@@ -21,19 +22,19 @@ type OnboardingItem = {
 
 const slides: OnboardingItem[] = [
   {
-    key: 1,
+    key: '1',
     title: Constants.ONBOARDING_FIRST_TITLE,
     text: Constants.ONBOARDING_FIRST_DESCRIPTION,
     image: ImageFinance,
   },
   {
-    key: 2,
+    key: '2',
     title: Constants.ONBOARDING_SECOND_TITLE,
     text: Constants.ONBOARDING_SECOND_DESCRIPTION,
     image: MagnifyingGlass,
   },
   {
-    key: 3,
+    key: '3',
     title: Constants.ONBOARDING_THIRD_TITLE,
     text: Constants.ONBOARDING_THIRD_DESCRIPTION,
     image: Globe,
@@ -50,8 +51,8 @@ type OnboardingState = {
 
 export default class ViewPagerPage extends Component<OnboardingProps, OnboardingState> {
   renderItem = ({ item } : {item: OnboardingItem}) => (
-    <View style={styles.mainConatiner}>
-      <View style={styles.mainContainer}>
+    <View style={styles.mainContainer}>
+      <View style={styles.imageContainer}>
         <Image source={item.image} style={styles.onboardingImage} />
       </View>
       <View style={styles.bottomContainer}>
@@ -76,7 +77,7 @@ export default class ViewPagerPage extends Component<OnboardingProps, Onboarding
   );
 
   onDone = async () => {
-    await SecureStore.setItemAsync('onboardingDone', 'true');
+    await SecureStore.setItemAsync('isOnboarding', 'false');
     this.props.navigation.navigate('Welcome');
   }
 
@@ -98,13 +99,13 @@ export default class ViewPagerPage extends Component<OnboardingProps, Onboarding
 
 const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-  mainConatiner: {
+  mainContainer: {
     flex: 1,
     width: Metrics.screenWidth,
     height: Metrics.screenHeight,
     backgroundColor: 'white',
   },
-  mainContainer: {
+  imageContainer: {
     flex: 0.6,
     justifyContent: 'center',
     alignItems: 'center',

@@ -1,3 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 
-export default React.createContext(undefined);
+interface AuthContextParams {
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => void;
+  signUp: (email: string, password: string) => Promise<void>;
+}
+
+export default React.createContext<Partial<AuthContextParams>>({});

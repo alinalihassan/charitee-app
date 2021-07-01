@@ -148,7 +148,7 @@ class ProductDescriptionAbout extends Component {
                 <View style={Styles.backContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                      this.props.navigation.navigate('main');
+                      this.props.navigation.goBack();
                     }}
                   >
                     <Image

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import {
+  View, Image, Text, TouchableOpacity,
+} from 'react-native';
 import Images from '../../../Styles/Images';
 import Styles from './Styles';
 
@@ -12,24 +14,23 @@ class Donate extends Component {
 
   render() {
     return (
-      <View style={Styles.mainConatiner}>
+      <View style={Styles.mainContainer}>
         <View style={Styles.headerWrapper}>
           <TouchableOpacity
             onPress={() => {
               this.props.navigation.navigate('ProductDescriptionAbout');
-            }}>
+            }}
+          >
             <Image source={Images.backIcon} style={Styles.indecatorStyle} />
           </TouchableOpacity>
-          <Text style={Styles.titleText1}>{'Donate'}</Text>
+          <Text style={Styles.titleText1}>Donate</Text>
         </View>
         <View style={Styles.mainContainer}>
           <Image source={Images.Header} style={Styles.introFirstImage} />
 
-          <Text style={Styles.bottomTextHeader}>{'Monthly payment'}</Text>
+          <Text style={Styles.bottomTextHeader}>Monthly payment</Text>
           <Text style={Styles.description}>
-            {
-              'You can change the supported amount or cancel your subscription at any time.'
-            }
+            You can change the supported amount or cancel your subscription at any time.
           </Text>
         </View>
         <View style={Styles.bottomContainer}>
@@ -44,7 +45,7 @@ class Donate extends Component {
                   />
                 </View>
 
-                <Text style={Styles.titleText}>{'Subscribe'}</Text>
+                <Text style={Styles.titleText}>Subscribe</Text>
               </View>
               <Image source={Images.right} style={Styles.rightArrowStyle} />
             </View>
@@ -53,7 +54,8 @@ class Donate extends Component {
           <TouchableOpacity
             onPress={() => {
               this.props.navigation.navigate('DonationPayment');
-            }}>
+            }}
+          >
             <View style={Styles.showPaymentWrapper}>
               <View style={{ flexDirection: 'row', marginLeft: 15 }}>
                 <View style={Styles.mainProfileWrapper}>
@@ -63,7 +65,7 @@ class Donate extends Component {
                   />
                 </View>
 
-                <Text style={Styles.titleText}>{'One-time payment'}</Text>
+                <Text style={Styles.titleText}>One-time payment</Text>
               </View>
               <Image source={Images.right} style={Styles.rightArrowStyle} />
             </View>

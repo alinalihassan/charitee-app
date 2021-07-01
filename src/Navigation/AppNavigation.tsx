@@ -1,3 +1,4 @@
+/* eslint-disable react/style-prop-object */
 import * as React from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,19 +19,21 @@ import CreditCardDetails from '../Screen/MainScreens/CreditCardDetails';
 import PaymentStatus from '../Screen/MainScreens/PaymentStatus';
 import FailedStatus from '../Screen/MainScreens/PaymentStatus/failedStatus';
 import AuthContext from '../Utils/AuthContext';
+import {
+  loginRequest, registerRequest,
+} from '../Utils/Networking';
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [appIsReady, setAppIsReady] = React.useState(false);
   const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
+    (prevState: any, action: any) => {
       switch (action.type) {
-        // case 'RESTORE_ONBOARDING':
-        //   return {
-        //     ...prevState,
-        //     onboardingDone: action.value,
-        //   };
+        case 'RESTORE_ONBOARDING':
+          return {
+            ...prevState,
+            isOnboarding: action.value,
+          };
         case 'RESTORE_TOKEN':
           return {
             ...prevState,
@@ -40,25 +43,25 @@ export default function App() {
         case 'SIGN_IN':
           return {
             ...prevState,
-            isSignout: false,
+            isSignOut: false,
             userToken: action.token,
           };
         case 'SIGN_OUT':
           return {
             ...prevState,
-            isSignout: true,
+            isSignOut: true,
             userToken: null,
           };
         default:
-          console.log(`Error, invalid option for dispatch${action.type}`);
+          // console.log(`Error, invalid option for dispatch${action.type}`);
           return undefined;
       }
     },
     {
       isLoading: true,
-      isSignout: false,
+      isSignOut: false,
       userToken: null,
-      // onboardingDone: false,
+      isOnboarding: true,
     },
   );
 
@@ -66,15 +69,17 @@ export default function App() {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
-      // let onboardingDone;
+      let isOnboarding;
 
       // Keep the splash screen visible while we fetch resources
       await SplashScreen.preventAutoHideAsync();
 
       try {
         // Restore token stored in `SecureStore` or any other encrypted storage
-        // userToken = await SecureStore.getItemAsync('userToken');
-        // onboardingDone = await SecureStore.getItemAsync('onboardingDone');
+        // await SecureStore.deleteItemAsync('userToken');
+        // await SecureStore.deleteItemAsync('isOnboarding');
+        userToken = await SecureStore.getItemAsync('userToken');
+        isOnboarding = await SecureStore.getItemAsync('isOnboarding');
       } catch (e) {
         // Restoring token failed
       }
@@ -83,12 +88,16 @@ export default function App() {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      if (userToken != null) {
+        dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      }
+      if (isOnboarding != null) {
+        dispatch({ type: 'RESTORE_ONBOARDING', value: isOnboarding === 'true' });
+      }
 
       // Remove this in the future, it's giving a glimpse of the onboarding page
       await new Promise((resolve) => setTimeout(resolve, 100));
       await SplashScreen.hideAsync();
-      // dispatch({ type: 'FINISH_ONBOARDING', value: onboardingDone === 'true' });
     };
 
     bootstrapAsync();
@@ -96,24 +105,16 @@ export default function App() {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async (data) => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
-        // In the example, we'll use a dummy token
-
-        await SecureStore.setItemAsync('userToken', 'dummy-auth-token');
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      signIn: async (email: string, password: string) => {
+        const token = await loginRequest(email, password);
+        await SecureStore.setItemAsync('userToken', token);
+        dispatch({ type: 'SIGN_IN', token });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async (data) => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
-        // In the example, we'll use a dummy token
-
-        await SecureStore.setItemAsync('userToken', 'dummy-auth-token');
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      signUp: async (email: string, password: string) => {
+        const token = await registerRequest(email, password);
+        await SecureStore.setItemAsync('userToken', token);
+        dispatch({ type: 'SIGN_IN', token });
       },
     }),
     [],
@@ -130,13 +131,13 @@ export default function App() {
           {state.userToken == null ? (
             // No token found, user isn't signed in
             <>
-              {/* {state.onboardingDone === false */}
-              {/* && ( */}
+              {state.isOnboarding === true
+              && (
               <Stack.Screen
                 name="Onboarding"
                 component={Onboarding}
               />
-              {/* )} */}
+              )}
               <Stack.Screen
                 name="Welcome"
                 component={Welcome}

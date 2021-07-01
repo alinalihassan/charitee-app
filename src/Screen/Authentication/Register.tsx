@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   View,
-  Image,
   Text,
   TouchableOpacity,
   SafeAreaView,
@@ -10,7 +9,7 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import Images from '../../Styles/Images';
+import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../Styles/Colors';
 import * as Constants from '../../Constants';
 import AuthContext from '../../Utils/AuthContext';
@@ -19,29 +18,29 @@ const Register = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const { signIn } = React.useContext(AuthContext);
+  const { signUp } = React.useContext(AuthContext);
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={styles.mainConatiner}>
+    <SafeAreaView style={styles.mainContainer}>
       <View style={styles.mainHeader}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Welcome');
+            navigation.goBack();
           }}
         >
-          <Image source={Images.backIcon} style={styles.indecatorStyle} />
+          <MaterialIcons name="chevron-left" size={32} color="black" />
         </TouchableOpacity>
-        <Text style={styles.donateText}>Register</Text>
-        <Text style={styles.donateText1}>ok</Text>
+        <Text style={styles.title}>Register</Text>
       </View>
 
-      <View style={styles.mainScreenConatiner}>
+      <View style={styles.form}>
         <TextInput
-          style={styles.inputWrapper}
+          style={styles.emailInput}
           label="Email"
           value={email}
           onChangeText={setEmail}
           mode="outlined"
+          autoCapitalize="none"
           theme={{
             roundness: 12,
             colors: {
@@ -54,12 +53,13 @@ const Register = () => {
         />
 
         <TextInput
-          style={styles.inputWrapper1}
+          style={styles.passwordInput}
           label="Password"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
           mode="outlined"
+          autoCapitalize="none"
           theme={{
             roundness: 12,
             colors: {
@@ -72,19 +72,21 @@ const Register = () => {
         />
 
         <TouchableOpacity
-          style={styles.donateButton}
+          style={styles.mainButton}
           onPress={() => {
-            signIn(email, password);
+            if (signUp) {
+              signUp(email, password);
+            }
           }}
         >
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.buttonText}>{Constants.SIGN_UP}</Text>
-            <Image source={Images.right} style={styles.rightArrowStyle} />
+            <MaterialIcons name="chevron-right" size={24} color="white" />
           </View>
         </TouchableOpacity>
 
         <View style={styles.bottomWrapper}>
-          <Text style={styles.bottomText1}>
+          <Text style={styles.bottomText}>
             {Constants.ALREADY_HAVE_ACCOUNT}
           </Text>
           <TouchableOpacity
@@ -102,7 +104,7 @@ const Register = () => {
 
 const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-  mainConatiner: {
+  mainContainer: {
     flex: 1,
     backgroundColor: 'white',
   },
@@ -114,40 +116,36 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between',
   },
-  indecatorStyle: {
-    width: 30,
-    height: 30,
-  },
-  donateText: {
+  title: {
+    position: 'absolute',
+    width: widthScreen - 48,
+    textAlign: 'center',
+    alignSelf: 'center',
     fontSize: 21,
     fontWeight: '500',
-    color: Colors.primary,
+    color: '#000',
+    zIndex: -1,
   },
-  donateText1: {
-    fontSize: 21,
-    fontWeight: '500',
-    color: Colors.White,
-  },
-  mainScreenConatiner: {
+  form: {
     width: widthScreen - 48,
     marginHorizontal: 24,
     alignSelf: 'center',
-    marginTop: '30%',
+    marginTop: 128,
   },
-  inputWrapper: {
+  emailInput: {
     height: 50,
     width: widthScreen - 48,
     marginHorizontal: 24,
     alignSelf: 'center',
   },
-  inputWrapper1: {
+  passwordInput: {
     height: 50,
     width: widthScreen - 48,
     marginHorizontal: 24,
     alignSelf: 'center',
     marginTop: 16,
   },
-  donateButton: {
+  mainButton: {
     marginTop: 48,
     width: widthScreen - 48,
     marginHorizontal: 24,
@@ -163,16 +161,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Colors.White,
   },
-  rightArrowStyle: {
-    width: 27,
-    height: 13,
-    marginTop: 6,
-    marginLeft: 10,
-  },
   bottomWrapper: {
-    marginTop: '15%',
+    marginTop: 64,
   },
-  bottomText1: {
+  bottomText: {
     fontSize: 15,
     color: Colors.textColor,
     textAlign: 'center',
