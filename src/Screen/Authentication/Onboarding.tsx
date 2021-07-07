@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View, Image, Text, Dimensions, StyleSheet,
 } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import * as SecureStore from 'expo-secure-store';
 import { MaterialIcons } from '@expo/vector-icons';
 import Metrics from '../../Styles/Metrics';
 import Colors from '../../Styles/Colors';
@@ -11,7 +10,7 @@ import * as Constants from '../../Constants';
 import ImageFinance from '../../../assets/Finances.png';
 import MagnifyingGlass from '../../../assets/magnifyingGlass.png';
 import Globe from '../../../assets/Globe.png';
-import { projectsRequest } from '../../Utils/Networking';
+import AuthContext from '../../Utils/AuthContext';
 
 type OnboardingItem = {
   key: string,
@@ -41,16 +40,10 @@ const slides: OnboardingItem[] = [
   },
 ];
 
-type OnboardingProps = {
-  slider: any
-}
+const Onboarding = () => {
+  const { finishOnboarding } = React.useContext(AuthContext);
 
-type OnboardingState = {
-  next: number
-}
-
-export default class ViewPagerPage extends Component<OnboardingProps, OnboardingState> {
-  renderItem = ({ item } : {item: OnboardingItem}) => (
+  const renderItem = ({ item } : {item: OnboardingItem}) => (
     <View style={styles.mainContainer}>
       <View style={styles.imageContainer}>
         <Image source={item.image} style={styles.onboardingImage} />
@@ -62,40 +55,37 @@ export default class ViewPagerPage extends Component<OnboardingProps, Onboarding
     </View>
   );
 
-  renderNextButton = () => (
+  const renderNextButton = () => (
     <View style={styles.donateButton}>
       <Text style={styles.donateText}>{Constants.ONBOARDING_BUTTON_CONTINUE}</Text>
       <MaterialIcons name="chevron-right" size={24} color="white" style={styles.rightArrowStyle} />
     </View>
   );
 
-  renderDoneButton = () => (
+  const renderDoneButton = () => (
     <View style={styles.donateButton}>
       <Text style={styles.donateText}>{Constants.ONBOARDING_BUTTON_GET_STARTED}</Text>
       <MaterialIcons name="chevron-right" size={24} color="white" style={styles.rightArrowStyle} />
     </View>
   );
 
-  onDone = async () => {
-    await SecureStore.setItemAsync('isOnboarding', 'false');
-    this.props.navigation.navigate('Welcome');
-  }
+  const onDone = async () => {
+    finishOnboarding();
+  };
 
-  render() {
-    return (
-      <AppIntroSlider
-        renderItem={this.renderItem}
-        data={slides}
-        bottomButton
-        renderNextButton={this.renderNextButton}
-        renderDoneButton={this.renderDoneButton}
-        onDone={this.onDone}
-        dotStyle={{ backgroundColor: '#ECEBED' }}
-        activeDotStyle={{ backgroundColor: Colors.appHeaderColor }}
-      />
-    );
-  }
-}
+  return (
+    <AppIntroSlider
+      renderItem={renderItem}
+      data={slides}
+      bottomButton
+      renderNextButton={renderNextButton}
+      renderDoneButton={renderDoneButton}
+      onDone={onDone}
+      dotStyle={{ backgroundColor: '#ECEBED' }}
+      activeDotStyle={{ backgroundColor: Colors.appHeaderColor }}
+    />
+  );
+};
 
 const widthScreen = Dimensions.get('window').width;
 const styles = StyleSheet.create({
@@ -136,11 +126,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: widthScreen - 48,
     marginHorizontal: 24,
-    height: 55,
+    height: 56,
     backgroundColor: Colors.appHeaderColor,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
+    marginBottom: 16,
     alignSelf: 'center',
   },
   donateText: {
@@ -152,3 +143,5 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 });
+
+export default Onboarding;

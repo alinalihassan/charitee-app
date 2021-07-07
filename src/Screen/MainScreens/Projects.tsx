@@ -11,10 +11,12 @@ import {
   ScrollView,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { FAB } from 'react-native-paper';
 import Colors from '../../Styles/Colors';
 import ProjectCard from '../../Components/ProjectCard';
 import FilterChip from '../../Components/FilterChip';
 import { ManyDataResponse, Project } from '../../Utils/Interfaces';
+import FilterModal from '../../Components/FilterModal';
 
 enum ContentType {
   Projects = 'Projects',
@@ -26,7 +28,8 @@ const Projects = () => {
   const [search, setSearch] = useState<string>('');
   const [data, setData] = useState<Project[]>([]);
   const [filter, setFilter] = useState<string>('Projects');
-  const [screenWidth, setScreenWidth] = useState(0);
+  const [screenWidth, setScreenWidth] = useState<number>(0);
+  const [openFilters, setOpenFilters] = useState<boolean>(false);
 
   const { width } = Dimensions.get('window');
   const scrollEnabled = screenWidth > width;
@@ -37,7 +40,7 @@ const Projects = () => {
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-        return response.json() as Promise<ManyDataResponse>;
+        return response.json() as Promise<ManyDataResponse<Project>>;
       })
       .then((json) => {
         setData(json.data);
@@ -94,6 +97,12 @@ const Projects = () => {
           style={styles.projectsList}
         />
       )}
+      <FAB
+        style={styles.fab}
+        icon="filter"
+        onPress={() => setOpenFilters(true)}
+      />
+      <FilterModal visible={openFilters} setVisibility={setOpenFilters} />
     </SafeAreaView>
   );
 };
@@ -104,6 +113,13 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: Colors.White,
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: Colors.appHeaderColor,
   },
   projectsList: {
     backgroundColor: '#F2F5FC',

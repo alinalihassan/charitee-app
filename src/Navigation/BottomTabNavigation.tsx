@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Profile from '../Screen/MainScreens/Profile';
 import colors from '../Styles/Colors';
 import Projects from '../Screen/MainScreens/Projects';
 
@@ -37,7 +36,7 @@ function App() {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={Projects}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }: any) => (

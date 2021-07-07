@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
+import { useState } from 'react';
 import Login from '../Screen/Authentication/Login';
 import Home from './BottomTabNavigation';
 import Welcome from '../Screen/Authentication/Welcome';
@@ -26,60 +27,26 @@ import {
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [state, dispatch] = React.useReducer(
-    (prevState: any, action: any) => {
-      switch (action.type) {
-        case 'RESTORE_ONBOARDING':
-          return {
-            ...prevState,
-            isOnboarding: action.value,
-          };
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userToken: action.token,
-            isLoading: false,
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignOut: false,
-            userToken: action.token,
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignOut: true,
-            userToken: null,
-          };
-        default:
-          // console.log(`Error, invalid option for dispatch${action.type}`);
-          return undefined;
-      }
-    },
-    {
-      isLoading: true,
-      isSignOut: false,
-      userToken: null,
-      isOnboarding: true,
-    },
-  );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [userToken, setUserToken] = useState<string | null>(null);
+  const [isOnboarding, setIsOnboarding] = useState<boolean>(true);
 
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
+
+    // await SecureStore.deleteItemAsync('isLoading');
+    // await SecureStore.deleteItemAsync('userToken');
+    // await SecureStore.deleteItemAsync('isOnboarding');
+
     const bootstrapAsync = async () => {
-      let userToken;
-      let isOnboarding;
-
       // Keep the splash screen visible while we fetch resources
-      await SplashScreen.preventAutoHideAsync();
-
+      if (isLoading) {
+        await SplashScreen.preventAutoHideAsync();
+      }
       try {
         // Restore token stored in `SecureStore` or any other encrypted storage
-        // await SecureStore.deleteItemAsync('userToken');
-        // await SecureStore.deleteItemAsync('isOnboarding');
-        userToken = await SecureStore.getItemAsync('userToken');
-        isOnboarding = await SecureStore.getItemAsync('isOnboarding');
+        setUserToken(await SecureStore.getItemAsync('userToken'));
+        setIsOnboarding(await SecureStore.getItemAsync('isOnboarding') === 'true');
       } catch (e) {
         // Restoring token failed
       }
@@ -88,16 +55,13 @@ export default function App() {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      if (userToken != null) {
-        dispatch({ type: 'RESTORE_TOKEN', token: userToken });
-      }
-      if (isOnboarding != null) {
-        dispatch({ type: 'RESTORE_ONBOARDING', value: isOnboarding === 'true' });
-      }
 
       // Remove this in the future, it's giving a glimpse of the onboarding page
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      await SplashScreen.hideAsync();
+      if (isLoading) {
+        setIsLoading(false);
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        await SplashScreen.hideAsync();
+      }
     };
 
     bootstrapAsync();
@@ -107,14 +71,18 @@ export default function App() {
     () => ({
       signIn: async (email: string, password: string) => {
         const token = await loginRequest(email, password);
-        await SecureStore.setItemAsync('userToken', token);
-        dispatch({ type: 'SIGN_IN', token });
+        SecureStore.setItemAsync('userToken', token);
+        setUserToken(token);
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signOut: () => setUserToken(null),
       signUp: async (email: string, password: string) => {
         const token = await registerRequest(email, password);
-        await SecureStore.setItemAsync('userToken', token);
-        dispatch({ type: 'SIGN_IN', token });
+        SecureStore.setItemAsync('userToken', token);
+        setUserToken(token);
+      },
+      finishOnboarding: async () => {
+        SecureStore.setItemAsync('isOnboarding', 'false');
+        setIsOnboarding(false);
       },
     }),
     [],
@@ -128,10 +96,10 @@ export default function App() {
             headerShown: false,
           }}
         >
-          {state.userToken == null ? (
+          {userToken == null ? (
             // No token found, user isn't signed in
             <>
-              {state.isOnboarding === true
+              {isOnboarding === true
               && (
               <Stack.Screen
                 name="Onboarding"
