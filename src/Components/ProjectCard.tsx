@@ -21,7 +21,9 @@ export default function ProjectCard({
       style={styles.cardWrapper}
       onPress={() => {
         navigation.navigate(
-          'ProductDescriptionAbout',
+          'ProductDescriptionAbout', {
+            project,
+          },
         );
       }}
     >
@@ -67,7 +69,6 @@ export default function ProjectCard({
         <Progress.Bar
           progress={project.funding / project.goal}
           width={widthScreen - 96}
-          height={8}
           borderWidth={0}
           color="#4B97FC"
           unfilledColor="#E3F0FC"

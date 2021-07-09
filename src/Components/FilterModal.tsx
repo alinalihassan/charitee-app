@@ -1,47 +1,53 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-param-reassign */
 import { MaterialIcons } from '@expo/vector-icons';
-import React, {
-  Dispatch, SetStateAction, useEffect, useState,
-} from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import {
-  View, TouchableOpacity, Text, Image, Dimensions, StyleSheet, ScrollView, SafeAreaView, FlatList,
+  View, TouchableOpacity, Text, Dimensions, StyleSheet, SafeAreaView, FlatList, Pressable,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { Checkbox } from 'react-native-paper';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Colors from '../Styles/Colors';
-import Images from '../Styles/Images';
-import { ManyDataResponse, Theme } from '../Utils/Interfaces';
+import { Theme } from '../Utils/Interfaces';
 
 type FilterModalProps = {
   visible: boolean,
   setVisibility: Dispatch<SetStateAction<boolean>>,
+  themes: CheckedTheme[],
+  setThemes: Dispatch<SetStateAction<CheckedTheme[]>>
 }
 
-const FilterModal = ({ visible, setVisibility }: FilterModalProps) => {
-  const [themes, setThemes] = useState<Theme[]>([]);
+interface CheckedTheme extends Theme {
+  checked: boolean;
+}
 
-  useEffect(() => {
-    fetch('https://www.charit.ee/api/themes')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.json() as Promise<ManyDataResponse<Theme>>;
-      })
-      .then((json) => {
-        setThemes(json.data);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+const FilterModal = ({
+  visible, setVisibility, themes, setThemes,
+}: FilterModalProps) => {
+  const initialThemes = JSON.parse(JSON.stringify(themes));
 
-  const renderItem = ({ item }: {item: Theme}) => (
-    <View key={item.id} style={styles.categoryContent}>
-      <Checkbox
-        color={Colors.appHeaderColor}
-        status="checked"
-      />
-      <Text style={styles.checkBoxText}>{item.name}</Text>
-    </View>
+  const setCheckedTheme = (item: CheckedTheme) => {
+    const objIndex = themes.findIndex(((obj) => obj.id === item.id));
+    themes[objIndex].checked = !themes[objIndex].checked;
+    setThemes(themes);
+  };
+
+  const renderItem = ({ item }: {item: CheckedTheme}) => (
+    <BouncyCheckbox
+      size={25}
+      fillColor={Colors.appHeaderColor}
+      style={styles.categoryContent}
+      unfillColor="#FFFFFF"
+      text={item.name}
+      textStyle={[{
+        textDecorationLine: 'none',
+      }, styles.checkBoxText]}
+      textContainerStyle={{}}
+      isChecked={item.checked}
+      iconStyle={{ borderColor: Colors.appHeaderColor }}
+      onPress={() => setCheckedTheme(item)}
+    />
   );
 
   return (
@@ -63,7 +69,11 @@ const FilterModal = ({ visible, setVisibility }: FilterModalProps) => {
         <View style={styles.mainHeader}>
           <View />
           <Text style={styles.headerText}>Filters</Text>
-          <TouchableOpacity onPress={() => setVisibility(false)}>
+          <TouchableOpacity onPress={() => {
+            setThemes(initialThemes);
+            setVisibility(false);
+          }}
+          >
             <Text style={styles.cancelText}>Cancel</Text>
           </TouchableOpacity>
         </View>
@@ -72,25 +82,18 @@ const FilterModal = ({ visible, setVisibility }: FilterModalProps) => {
         <Text style={styles.mainContentText}>Category</Text>
         <FlatList
           showsVerticalScrollIndicator
+          style={styles.categoryList}
           data={themes}
           renderItem={renderItem}
           keyExtractor={(theme) => theme.id}
         />
-        {/* <ScrollView>
-          {themes.map((theme) => (
-            <View key={theme.id} style={styles.categoryContent}>
-              <Checkbox
-                color={Colors.appHeaderColor}
-                status="checked"
-              />
-              <Text style={styles.checkBoxText}>{theme.name}</Text>
-            </View>
-          ))}
-        </ScrollView> */}
 
         <SafeAreaView style={styles.bottomButtonWrapper}>
           <TouchableOpacity
-            onPress={() => setVisibility(false)}
+            onPress={() => {
+              themes.forEach((theme) => theme.checked = false);
+              setVisibility(false);
+            }}
             style={styles.resetFilterButton}
           >
             <Text style={styles.resetFilterText}>Reset</Text>
@@ -144,18 +147,20 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '500',
     color: '#6D7E92',
-    marginTop: 30,
+    marginTop: 32,
+    marginBottom: 8,
   },
   categoryContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 16,
+    paddingLeft: 8,
+    padding: 16,
+  },
+  categoryList: {
+    marginBottom: 114,
   },
   checkBoxText: {
     color: '#05263D',
     fontSize: 18,
     fontWeight: '500',
-    marginLeft: 16,
   },
   applyFilterButton: {
     flexDirection: 'row',

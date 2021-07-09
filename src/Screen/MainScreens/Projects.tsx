@@ -15,7 +15,7 @@ import { FAB } from 'react-native-paper';
 import Colors from '../../Styles/Colors';
 import ProjectCard from '../../Components/ProjectCard';
 import FilterChip from '../../Components/FilterChip';
-import { ManyDataResponse, Project } from '../../Utils/Interfaces';
+import { ManyDataResponse, Project, Theme } from '../../Utils/Interfaces';
 import FilterModal from '../../Components/FilterModal';
 
 enum ContentType {
@@ -23,10 +23,15 @@ enum ContentType {
   Charities = 'Charities',
 }
 
+interface CheckedTheme extends Theme {
+  checked: boolean;
+}
+
 const Projects = () => {
+  const [themes, setThemes] = useState<CheckedTheme[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
-  const [data, setData] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [filter, setFilter] = useState<string>('Projects');
   const [screenWidth, setScreenWidth] = useState<number>(0);
   const [openFilters, setOpenFilters] = useState<boolean>(false);
@@ -43,10 +48,24 @@ const Projects = () => {
         return response.json() as Promise<ManyDataResponse<Project>>;
       })
       .then((json) => {
-        setData(json.data);
+        setProjects(json.data);
       })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
+      .catch((error) => console.error(error));
+
+    fetch('https://www.charit.ee/api/themes')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json() as Promise<ManyDataResponse<Theme>>;
+      })
+      .then((json) => {
+        const data = json.data.map((x) => ({ ...x, checked: false }));
+        setThemes(data);
+      })
+      .catch((error) => console.error(error));
+
+    setLoading(false);
   }, []);
 
   const renderItem = ({ item }: {item: Project}) => (
@@ -91,7 +110,7 @@ const Projects = () => {
       {isLoading ? <ActivityIndicator size="large" style={styles.loadingBar} /> : (
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={data}
+          data={projects}
           renderItem={renderItem}
           keyExtractor={(item) => item.title}
           style={styles.projectsList}
@@ -102,7 +121,12 @@ const Projects = () => {
         icon="filter"
         onPress={() => setOpenFilters(true)}
       />
-      <FilterModal visible={openFilters} setVisibility={setOpenFilters} />
+      <FilterModal
+        visible={openFilters}
+        setVisibility={setOpenFilters}
+        themes={themes}
+        setThemes={setThemes}
+      />
     </SafeAreaView>
   );
 };
