@@ -15,7 +15,7 @@ import { FAB } from 'react-native-paper';
 import Colors from '../../Styles/Colors';
 import ProjectCard from '../../Components/ProjectCard';
 import FilterChip from '../../Components/FilterChip';
-import { ManyDataResponse, Project, Theme } from '../../Utils/Interfaces';
+import { ManyEntriesResponse, Project, Theme } from '../../Utils/Interfaces';
 import FilterModal from '../../Components/FilterModal';
 
 enum ContentType {
@@ -36,39 +36,46 @@ const Projects = () => {
   const [screenWidth, setScreenWidth] = useState<number>(0);
   const [openFilters, setOpenFilters] = useState<boolean>(false);
 
-  const { width } = Dimensions.get('window');
-  const scrollEnabled = screenWidth > width;
-
-  useEffect(() => {
+  const fetchProjects = () => {
     fetch('https://www.charit.ee/api/projects')
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-        return response.json() as Promise<ManyDataResponse<Project>>;
+        return response.json() as Promise<ManyEntriesResponse<Project>>;
       })
       .then((json) => {
         setProjects(json.data);
       })
       .catch((error) => console.error(error));
+  };
 
+  const fetchThemes = () => {
     fetch('https://www.charit.ee/api/themes')
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-        return response.json() as Promise<ManyDataResponse<Theme>>;
+        return response.json() as Promise<ManyEntriesResponse<Theme>>;
       })
       .then((json) => {
         const data = json.data.map((x) => ({ ...x, checked: false }));
         setThemes(data);
       })
       .catch((error) => console.error(error));
+  };
+
+  const { width } = Dimensions.get('window');
+  const scrollEnabled = screenWidth > width;
+
+  useEffect(() => {
+    fetchProjects();
+    fetchThemes();
 
     setLoading(false);
   }, []);
 
-  const renderItem = ({ item }: {item: Project}) => (
+  const renderItem = ({ item }: { item: Project }) => (
     <ProjectCard
       key={item.title}
       project={item}

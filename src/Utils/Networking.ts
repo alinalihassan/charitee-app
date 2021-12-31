@@ -1,5 +1,3 @@
-import { Project } from './Interfaces';
-
 export const loginRequest = async (email: string, password: string): Promise<string> => fetch('https://www.charit.ee/api/auth/login/', {
   method: 'POST',
   headers: {
@@ -31,12 +29,3 @@ export const registerRequest = async (email: string, password: string): Promise<
   .catch((error) => {
     console.error(error);
   });
-
-export const projectsRequest = async () => fetch('https://www.charit.ee/api/projects')
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-    return response.json() as Promise<{ data: Project[] }>;
-  })
-  .then((data) => data.data);

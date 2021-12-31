@@ -1,17 +1,12 @@
-export interface DefaultResponse {
-  status: number;
+export interface SingleEntryResponse<T> {
+  status: string;
   message: string;
-}
-
-export interface DataResponse<T> {
-  status: number;
   data: T;
 }
 
-export interface ManyDataResponse<T> {
-  status: number;
-  count: number;
-  nextPage?: number;
+export interface ManyEntriesResponse<T> {
+  status: string;
+  message: string;
   data: T[];
 }
 
